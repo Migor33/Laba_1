@@ -20,7 +20,7 @@ public class Main {
         Random random = new Random();
         PersonArray mass = new PersonArray();
         for (int i = 0; i < n; i++) {
-            mass.add(new Person(new LocalDate(random.nextInt((maxYear - minYear) + 1) + minYear, random.nextInt(maxMonth), random.nextInt(maxDay)),
+            mass.add(new Person(new LocalDate(random.nextInt((maxYear - minYear) + 1) + minYear, random.nextInt(maxMonth) + 1, random.nextInt(maxDay)),
                     random.nextInt(maxPassID - minPassID) + minPassID, Person.Gender.MAN,
                     "PersonName" + i,
                     "PersonSurname" + i,
