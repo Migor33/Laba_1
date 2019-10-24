@@ -8,11 +8,13 @@ import java.util.Objects;
  * Класс, для хранения информации о человеке.
  */
 public class Person implements Cloneable {
-
+    /**
+     * тип для определения пола человека.
+     */
     public enum Gender {
         MAN,
         WOMEN
-    };
+    }
 
     private LocalDate dayOfBorn;
     private int passportID;
@@ -161,8 +163,8 @@ public class Person implements Cloneable {
      * Возвращает сколько полных лет человеку.
      * @return целое количество лет.
      */
-    public int getAge(){
-       return Years.yearsBetween(dayOfBorn,new LocalDate()).getYears();
+    public int getAge() {
+       return Years.yearsBetween(dayOfBorn, new LocalDate()).getYears();
     }
 
     @Override

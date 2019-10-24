@@ -8,13 +8,17 @@ import java.util.Arrays;
 public class PersonArray {
     private Person[] mass;
     private int head;
-    private static final int defoltLenght = 10;
+    /**
+     * Начальная длинна массива по умолчанию.
+     * Так же значение, на которое расширяется массив.
+     */
+    private static final int DEFAULT_LENGTH = 10;
 
     /**
      * Конструктор по умолчанию, выделяет 10 мест для людей.
      */
     public PersonArray() {
-        mass = new Person[defoltLenght];
+        mass = new Person[DEFAULT_LENGTH];
         head = -1;
     }
 
@@ -35,7 +39,7 @@ public class PersonArray {
         this.mass = new Person[mass.length];
         for (int i = 0; i < mass.length; i++) {
             try {
-                this.mass[i]= (Person) mass[i].clone();
+                this.mass[i] = (Person) mass[i].clone();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
@@ -49,9 +53,9 @@ public class PersonArray {
      * @param a элемент, который необходимо добавить.
      */
     public void add(Person a) {
-        if (++head>=mass.length) {
-            Person[] newMass = new Person[mass.length+defoltLenght];
-            System.arraycopy(mass,0,newMass,0,head);
+        if (++head >= mass.length) {
+            Person[] newMass = new Person[mass.length + DEFAULT_LENGTH];
+            System.arraycopy(mass, 0, newMass, 0, head);
             newMass[head] = a;
             mass = newMass;
         } else {
@@ -66,14 +70,14 @@ public class PersonArray {
      */
     public void add(Person[] m) {
         if (head + m.length > mass.length) {
-            Person[] newMass = new Person[m.length+head + 1];
-            System.arraycopy(mass,0,newMass,0,head+1);
+            Person[] newMass = new Person[m.length + head + 1];
+            System.arraycopy(mass, 0, newMass, 0, head + 1);
             for (int i = mass.length, j = 0; j < m.length; i++, j++) {
                 newMass[i] = m[j];
             }
             mass = newMass;
         } else {
-            for (int i = head+1, j = 0; j < m.length; i++, j++) {
+            for (int i = head + 1, j = 0; j < m.length; i++, j++) {
                 mass[i] = m[j];
             }
         }
@@ -93,7 +97,7 @@ public class PersonArray {
      * @return колличество элементов в массиве в данный момент.
      */
     public int length() {
-        return head +1;
+        return head + 1;
     }
 
     /**
@@ -119,12 +123,12 @@ public class PersonArray {
     public void delete(int index, int count) {
         int end;
         if (head - count > index) {
-            System.arraycopy(mass,index+count,mass,index,head-count-index+1);
-            head-=count;
+            System.arraycopy(mass, index+count, mass, index, head - count - index + 1);
+            head -= count;
         } else {
             head = index;
         }
-        for (int i = head+1; i < mass.length; i++) {
+        for (int i = head + 1; i < mass.length; i++) {
             mass[i] = null;
         }
     }
@@ -135,7 +139,7 @@ public class PersonArray {
      * @param value новый элемент.
      */
     public void set(int index, Person value) {
-        if (index<=head) {
+        if (index <= head) {
             mass[index] = value;
         }
     }
@@ -146,12 +150,12 @@ public class PersonArray {
      */
     public void cutSize() {
         Person[] newMass;
-        if (head < defoltLenght) {
-            newMass = new Person[defoltLenght];
+        if (head < DEFAULT_LENGTH) {
+            newMass = new Person[DEFAULT_LENGTH];
         } else {
-            newMass = new Person[head+1];
+            newMass = new Person[head + 1];
         }
-        System.arraycopy(mass,0,newMass,0,head+1);
+        System.arraycopy(mass, 0, newMass, 0, head + 1);
         mass = newMass;
     }
 
