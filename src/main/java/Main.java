@@ -5,7 +5,7 @@ import org.joda.time.LocalDate;
 import java.util.Random;
 
 /**
- * Класс, для димонстрации функционала PersonArray.
+ * Class for showing how PersonArray work
  */
 public class Main {
     public static void main(String[] args) {
@@ -18,21 +18,21 @@ public class Main {
         int maxMonth = 12;
         int maxDay = 28;
         Random random = new Random();
-        PersonArray mass = new PersonArray();
+        PersonArray array = new PersonArray();
         for (int i = 0; i < n; i++) {
-            mass.add(new Person(new LocalDate(random.nextInt((maxYear - minYear) + 1) + minYear, random.nextInt(maxMonth) + 1, random.nextInt(maxDay)),
+            array.add(new Person(new LocalDate(random.nextInt((maxYear - minYear) + 1) + minYear, random.nextInt(maxMonth) + 1, random.nextInt(maxDay)),
                     random.nextInt(maxPassID - minPassID) + minPassID, Person.Gender.MAN,
                     "PersonName" + i,
                     "PersonSurname" + i,
                     "PersonMiddleName" + i));
         }
-        System.out.println(mass);
-            mass.delete(k, n / 2);
-        System.out.println(mass);
-        mass.cutSize();
-        System.out.println(mass);
-        for (int i = 0; i < mass.length(); i++) {
-            System.out.println(mass.get(i).getAge());
+        System.out.println(array);
+            array.delete(k, n / 2);
+        System.out.println(array);
+        array.cutSize();
+        System.out.println(array);
+        for (int i = 0; i < array.length(); i++) {
+            System.out.println(array.get(i).getAge());
         }
     }
 }

@@ -3,112 +3,114 @@ package com.person;
 import java.util.Arrays;
 
 /**
- * Класс, реализующий список Person на основе мессива.
+ * Array-based Person list.
  */
 public class PersonArray {
-    private Person[] mass;
+    private Person[] array;
     private int head;
+
     /**
-     * Начальная длинна массива по умолчанию.
-     * Так же значение, на которое расширяется массив.
+     * Start array.length().
+     * Also the value by which the array expands.
      */
     private static final int DEFAULT_LENGTH = 10;
 
     /**
-     * Конструктор по умолчанию, выделяет 10 мест для людей.
+     * Default constructor, that create array whit length = DEFAULT_LENGTH.
      */
     public PersonArray() {
-        mass = new Person[DEFAULT_LENGTH];
+        array = new Person[DEFAULT_LENGTH];
         head = -1;
     }
 
     /**
-     * Конструктор, выделяющий определенное количество ест под людей.
-     * @param size колличество мест.
+     * Constructor, that create array whit length = size.
+     * @param size length of array.
      */
     public PersonArray(int size) {
-        mass = new Person[size];
+        array = new Person[size];
         head = -1;
     }
 
     /**
-     * Конструктор, копирующий переданный массив, ко все элементам приминеется метод .clone().
-     * @param mass исходный массив.
+     * Constructor, that clone elements of passed array in list.
+     * @param array array that need to clone in list.
      */
-    public PersonArray(Person[] mass) {
-        this.mass = new Person[mass.length];
-        for (int i = 0; i < mass.length; i++) {
+    public PersonArray(Person[] array) {
+        this.array = new Person[array.length];
+        for (int i = 0; i < array.length; i++) {
             try {
-                this.mass[i] = (Person) mass[i].clone();
+                this.array[i] = (Person) array[i].clone();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
         }
-        head = mass.length;
+        head = array.length;
     }
 
     /**
-     * добавлние одного элемента на мервое свободное место, элемент кладется по ссылке.
-     * В случае, если места нет, массив удлиняется на 10.
-     * @param a элемент, который необходимо добавить.
+     * add one element in end of list.
+     * if the array haven't any free place than expands array by DEFAULT_LENGTH.
+     * @param a element to add.
      */
     public void add(Person a) {
-        if (++head >= mass.length) {
-            Person[] newMass = new Person[mass.length + DEFAULT_LENGTH];
-            System.arraycopy(mass, 0, newMass, 0, head);
-            newMass[head] = a;
-            mass = newMass;
+        if (++head >= array.length) {
+            Person[] newArray = new Person[array.length + DEFAULT_LENGTH];
+            System.arraycopy(array, 0, newArray, 0, head);
+            newArray[head] = a;
+            array = newArray;
         } else {
-            mass[head] = a;
+            array[head] = a;
         }
     }
 
     /**
-     * Добавление массива элементов втконец текущего.
-     * Если места не хватает, выделяется ровно столько меест, сколько нужно, чтобы хранить итоговый массив.
-     * @param m массив, который необходимо добавить.
+     * add an array of Persons in end of the list.
+     * if the array haven't any free place than expands by the required places.
+     * @param array array to add.
      */
-    public void add(Person[] m) {
-        if (head + m.length > mass.length) {
-            Person[] newMass = new Person[m.length + head + 1];
-            System.arraycopy(mass, 0, newMass, 0, head + 1);
-            for (int i = mass.length, j = 0; j < m.length; i++, j++) {
-                newMass[i] = m[j];
+    public void add(Person[] array) {
+        if (head + array.length > this.array.length) {
+            Person[] newArray = new Person[array.length + head + 1];
+            System.arraycopy(this.array, 0, newArray, 0, head + 1);
+            for (int i = this.array.length, j = 0; j < array.length; i++, j++) {
+                newArray[i] = array[j];
             }
-            mass = newMass;
+            this.array = newArray;
         } else {
-            for (int i = head + 1, j = 0; j < m.length; i++, j++) {
-                mass[i] = m[j];
+            for (int i = head + 1, j = 0; j < array.length; i++, j++) {
+                this.array[i] = array[j];
             }
         }
-        head += m.length;
+        head += array.length;
     }
 
     /**
-     * Возврашает элемент массива.
-     * @param index номер нужного элемента.
-     * @return элемент с заданным индексом.
+     * return element with passed index .
+     * @param index element's index.
+     * @return element of list.
      */
     public Person get(int index) {
-        return mass[index];
+        return array[index];
     }
 
     /**
-     * @return колличество элементов в массиве в данный момент.
+     * @return count of elements in array.
      */
     public int length() {
         return head + 1;
     }
 
     /**
-     * @return текущее количество мест в массиве.
+     * @return count og places in array.
      */
-    public int massSize() {
-        return mass.length;
+    public int arraySize() {
+        return array.length;
     }
 
     /**
-     * удаляет один элемент, сдвигая все остальные влево.
+     * delete one element with passed index.
+     * Shift left all elements after deleted element
      * @param index удаляемый элемент.
      */
     public void delete(int index) {
@@ -116,53 +118,54 @@ public class PersonArray {
     }
 
     /**
-     * удаляет несколько элементов, сдвигая все элементы влево.
-     * @param index номер, с колторого начать удалять.
-     * @param count колличество элементов, которые надо удалить.
+     * delete several elements.
+     * Shift left all elements after deleted elements.
+     * @param index first element for deleting.
+     * @param count count elements, that need to delete.
      */
     public void delete(int index, int count) {
         int end;
         if (head - count > index) {
-            System.arraycopy(mass, index+count, mass, index, head - count - index + 1);
+            System.arraycopy(array, index+count, array, index, head - count - index + 1);
             head -= count;
         } else {
             head = index;
         }
-        for (int i = head + 1; i < mass.length; i++) {
-            mass[i] = null;
+        for (int i = head + 1; i < array.length; i++) {
+            array[i] = null;
         }
     }
 
     /**
-     * заменяет элемент массива.
-     * @param index идекс элемента.
-     * @param value новый элемент.
+     * set array's element.
+     * @param index element's index.
+     * @param value new element.
      */
     public void set(int index, Person value) {
         if (index <= head) {
-            mass[index] = value;
+            array[index] = value;
         }
     }
 
     /**
-     * обрезает все свободные места.
-     * Всегда оставляет хотябы 10 мест.
+     * cut all free places.
+     * always let DEFAULT_LENGTH places.
      */
     public void cutSize() {
-        Person[] newMass;
+        Person[] newArray;
         if (head < DEFAULT_LENGTH) {
-            newMass = new Person[DEFAULT_LENGTH];
+            newArray = new Person[DEFAULT_LENGTH];
         } else {
-            newMass = new Person[head + 1];
+            newArray = new Person[head + 1];
         }
-        System.arraycopy(mass, 0, newMass, 0, head + 1);
-        mass = newMass;
+        System.arraycopy(array, 0, newArray, 0, head + 1);
+        array = newArray;
     }
 
     @Override
     public String toString() {
         return "PersonArray{" +
-                "mass=" + Arrays.toString(mass) +
+                "array=" + Arrays.toString(array) +
                 '}';
     }
 }

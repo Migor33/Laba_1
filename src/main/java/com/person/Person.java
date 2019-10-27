@@ -5,11 +5,11 @@ import org.joda.time.Years;
 import java.util.Objects;
 
 /**
- * Класс, для хранения информации о человеке.
+ * Class for storing information about human.
  */
 public class Person implements Cloneable {
     /**
-     * тип для определения пола человека.
+     * Gender of person.
      */
     public enum Gender {
         MAN,
@@ -24,23 +24,23 @@ public class Person implements Cloneable {
     private String middleName;
 
     /**
-     * Изменяет дату рождения.
-     * @param dayOfBorn новая дата рождения.
+     * Change person's day of born.
+     * @param dayOfBorn new day of born.
      */
     public void setDayOfBorn(LocalDate dayOfBorn) {
         this.dayOfBorn = dayOfBorn;
     }
 
     /**
-     * Изменяет номер паспорта.
-     * @param passportID новый номер паспорта.
+     * Change passport id.
+     * @param passportID new passport id.
      */
     public void setPassportID(int passportID) {
         this.passportID = passportID;
     }
 
     /**
-     * Изменяет пол.
+     * Change person's gender.
      * @param gender новый пол.
      */
     public void setGender(Gender gender) {
@@ -48,23 +48,23 @@ public class Person implements Cloneable {
     }
 
     /**
-     * Изменяет имя.
-     * @param name новое имя.
+     * Change person's name.
+     * @param name new name.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Изменет фамилию.
-     * @param surname новая фамилия.
+     * Change person's surname.
+     * @param surname new surname.
      */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
     /**
-     * Изменяет отчество.
+     * Change person's middle name.
      * @param middleName новое отчетсво.
      */
     public void setMiddleName(String middleName) {
@@ -72,40 +72,40 @@ public class Person implements Cloneable {
     }
 
     /**
-     *  Возвращает номер паспорта.
-     * @return текущий номер паспорта.
+     *  get passport id
+     * @return passportID.
      */
     public int getPassportID() {
         return passportID;
     }
 
     /**
-     * Возращает пол в формате Person.Gender.
-     * @return текущйи пол человека.
+     * get person's gander in Person.Gender type.
+     * @return gender.
      */
     public Gender getGender() {
         return gender;
     }
 
     /**
-     * Возвращает имя в формате String.
-     * @return имя человека.
+     * get person's name in String type.
+     * @return name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Возвращает Фамилию в формате String.
-     * @return фамилия человека.
+     * get person's surname in String type.
+     * @return surname.
      */
     public String getSurname() {
         return surname;
     }
 
     /**
-     * Возвращает отчество в формате String.
-     * @return отчество человека.
+     * get person's middle name in String type..
+     * @return middleName.
      */
     public String getMiddleName() {
         return middleName;
@@ -142,13 +142,12 @@ public class Person implements Cloneable {
     }
 
     /**
-     * Конструктор, создающий объект по переданным данным.
-     * @param dayOfBorn дата рождения.
-     * @param passportID номер паспорта.
-     * @param gender пол.
-     * @param name имя.
-     * @param surname фамилия.
-     * @param middleName отчество.
+     * @param dayOfBorn person's day of born.
+     * @param passportID person's passport id.
+     * @param gender person's gender.
+     * @param name person's name.
+     * @param surname person's surname.
+     * @param middleName person's middle name.
      */
     public Person(LocalDate dayOfBorn, int passportID, Gender gender, String name, String surname, String middleName) {
         this.dayOfBorn = dayOfBorn;
@@ -160,8 +159,8 @@ public class Person implements Cloneable {
     }
 
     /**
-     * Возвращает сколько полных лет человеку.
-     * @return целое количество лет.
+     * get person's Age.
+     * @return age in int type
      */
     public int getAge() {
        return Years.yearsBetween(dayOfBorn, new LocalDate()).getYears();
