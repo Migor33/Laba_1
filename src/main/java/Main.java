@@ -5,7 +5,7 @@ import org.joda.time.LocalDate;
 import java.util.Random;
 
 /**
- * Class for showing how PersonArray works
+ * Class for showing how PersonArray works.
  */
 public class Main {
     private static final int N = 20;
@@ -17,6 +17,10 @@ public class Main {
     private static final int MAX_MONTH = 12;
     private static final int MAX_DAY = 28;
 
+    /**
+     * Class for showing how PersonArray works.
+     * @param args don't used
+     */
     public static void main(String[] args) {
         Random random = new Random();
         PersonArray array = new PersonArray();
