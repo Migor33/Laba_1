@@ -5,7 +5,7 @@ import org.joda.time.LocalDate;
 import java.util.Random;
 
 /**
- * Class for showing how PersonArray work
+ * Class for showing how PersonArray works
  */
 public class Main {
     private static final int N = 20;
