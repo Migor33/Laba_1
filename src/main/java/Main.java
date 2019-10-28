@@ -8,14 +8,14 @@ import java.util.Random;
  * Class for showing how PersonArray work
  */
 public class Main {
-    private static int N = 20;
-    private static int K =5;
-    private static int MIN_YEAR = 1980;
-    private static int MAX_YEAR = 2018;
-    private static int MIN_PASSPORT_ID = 1000;
-    private static int MAX_PASSPORT_ID = 2000;
-    private static int MAX_MONTH = 12;
-    private static int MAX_DAY = 28;
+    private static final int N = 20;
+    private static final int K =5;
+    private static final int MIN_YEAR = 1980;
+    private static final int MAX_YEAR = 2018;
+    private static final int MIN_PASSPORT_ID = 1000;
+    private static final int MAX_PASSPORT_ID = 2000;
+    private static final int MAX_MONTH = 12;
+    private static final int MAX_DAY = 28;
 
     public static void main(String[] args) {
         Random random = new Random();
