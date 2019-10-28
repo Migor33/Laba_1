@@ -19,7 +19,7 @@ public class Main {
 
     /**
      * Class for showing how PersonArray works.
-     * @param args don't used
+     * @param args don't used.
      */
     public static void main(String[] args) {
         Random random = new Random();
