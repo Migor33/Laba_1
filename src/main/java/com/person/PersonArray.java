@@ -9,6 +9,18 @@ public class PersonArray {
     private Person[] array;
     private int head;
 
+    public interface SortCompere {
+        boolean compare(Person p1,Person p2);
+    }
+
+    public interface SortInterface {
+        void sort(SortCompere compare, PersonArray personArray);
+    }
+
+    public void sortArray(SortCompere compere, SortInterface sort) {
+        sort.sort(compere, this);
+    }
+
     /**
      * Start array.length().
      * Also the value by which the array expands.
