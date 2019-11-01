@@ -35,8 +35,8 @@ public class PersonArrayTest {
                 }
             }
         }
-    }
 
+    }
     class SelectionSort implements PersonArray.SortInterface {
 
         @Override
@@ -51,8 +51,8 @@ public class PersonArrayTest {
                 }
             }
         }
-    }
 
+    }
     @Before
     public void initTest() {
         Random random = new Random();
@@ -73,9 +73,8 @@ public class PersonArrayTest {
         array = null;
     }
 
-    @Test
-    public void sortArrayByBubbleSort() {
-        array.sortArray((p1,p2) -> p1.getPassportID() < p2.getPassportID(),new BubbleSort());
+    private boolean testSort(PersonArray.SortInterface sortInterface) {
+        array.sortArray((p1,p2) -> p1.getPassportID() < p2.getPassportID(),sortInterface);
         boolean temp = false;
         for (int i = 0; i < array.length()-1; i++) {
             if (temp) {
@@ -83,19 +82,38 @@ public class PersonArrayTest {
             }
             temp = array.get(i).getPassportID() < array.get(i+1).getPassportID();
         }
-        assertFalse(temp);
+        return temp;
     }
 
     @Test
-    public void sortArrayBySelectionSort() {
-        array.sortArray((p1,p2) -> p1.getPassportID() < p2.getPassportID(),new SelectionSort());
-        boolean temp = false;
-        for (int i = 0; i < array.length()-1; i++) {
-            if (temp) {
+    public void sortArrayTest() {
+        assertFalse(testSort(new BubbleSort()));
+        assertFalse(testSort(new SelectionSort()));
+    }
+
+    @Test
+    public void getArray() {
+        PersonArray temp = array.getArray((p) -> p.getAge() > 12);
+        boolean test = true;
+        for (int i = 0; i < temp.length(); i++) {
+            test = temp.get(i).getAge() > 12;
+            if (!test) {
                 break;
             }
-            temp = array.get(i).getPassportID() < array.get(i+1).getPassportID();
         }
-        assertFalse(temp);
+        assertTrue(test);
+    }
+
+    @Test
+    public void getTest() {
+        Person a = array.get(19);
+        Person temp = array.get((p) -> p.getAge() == a.getAge());
+        assertEquals(temp.getAge(),a.getAge());
+        temp = array.get((p) -> p.equals(a));
+        assertEquals(temp,a);
+        temp = array.get((p) -> p == a);
+        assertSame(temp,a);
+        temp = array.get((p) -> p.getAge() > 200);
+        assertNull(temp);
     }
 }

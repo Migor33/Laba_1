@@ -21,6 +21,31 @@ public class PersonArray {
         sort.sort(compere, this);
     }
 
+    public interface GetCriterionInterface {
+        boolean criterion(Person person);
+    }
+
+    public Person get(GetCriterionInterface getCriterionInterface) {
+        for (Person temp:
+             array) {
+            if (getCriterionInterface.criterion(temp)) {
+                return temp;
+            }
+        }
+        return null;
+    }
+
+    public PersonArray getArray(GetCriterionInterface getCriterionInterface) {
+        PersonArray newArray = new PersonArray();
+        for (Person temp :
+                array) {
+            if (getCriterionInterface.criterion(temp)) {
+                newArray.add(temp);
+            }
+        }
+        return newArray;
+    }
+
     /**
      * Start array.length().
      * Also the value by which the array expands.
