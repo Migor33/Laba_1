@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 public class PersonArrayTest {
 
     private static final int N = 20;
-    private static final int K =5;
     private static final int MIN_YEAR = 1980;
     private static final int MAX_YEAR = 2018;
     private static final int MIN_PASSPORT_ID = 1000;
@@ -102,6 +101,13 @@ public class PersonArrayTest {
             }
         }
         assertTrue(test);
+        int k = 0;
+        for (int i = 0; i < array.length(); i++) {
+            if (array.get(i).getAge()>12) {
+                k++;
+            }
+        }
+        assertEquals(k,temp.length());
     }
 
     @Test
