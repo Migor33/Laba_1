@@ -24,5 +24,7 @@ public interface IRepository {
 	
 	//Should not use toList method
 	public IRepository searchBy(Predicate<IPerson> condition);
+
+	public Integer length();
 	
 }

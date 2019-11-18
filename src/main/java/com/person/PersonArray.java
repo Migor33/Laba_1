@@ -184,10 +184,11 @@ public class PersonArray implements IRepository {
     }
 
     /**
-     * @return count of places in array.
+     * @return count of person in array.
      */
-    public int length() {
-        return array.length;
+    @Override
+    public Integer length() {
+        return head+1;
     }
 
     /**

@@ -3,7 +3,9 @@ package com.person;
 import com.person.enums.Gender;
 import com.person.personInterface.IPerson;
 import com.person.personInterface.IRepository;
+
 import org.joda.time.LocalDate;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +13,6 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Random;
-
 import static org.junit.Assert.*;
 
 public class PersonArrayTest {
@@ -90,7 +91,7 @@ public class PersonArrayTest {
             }
         }
         assertTrue(test);
-        int k = 0;
+        Integer k = 0;
         for (int i = 0; i < array.length(); i++) {
             if (array.get(i).getAge()>12) {
                 k++;
