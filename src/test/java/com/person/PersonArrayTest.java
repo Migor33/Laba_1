@@ -1,10 +1,15 @@
 package com.person;
 
+import com.person.enums.Gender;
+import com.person.personInterface.IPerson;
+import com.person.personInterface.IRepository;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -24,11 +29,11 @@ public class PersonArrayTest {
     class BubbleSort implements PersonArray.SortInterface {
 
         @Override
-        public void sort(PersonArray.SortCompere compare, PersonArray personArray) {
+        public void sort(Comparator<IPerson> comparator, PersonArray personArray) {
             for (int i = 0; i < personArray.length()-1; i++) {
                 for (int j = 0; j < personArray.length()-i-1; j++) {
-                    if (compare.compare(personArray.get(j),personArray.get(j+1))) {
-                        Person temp = personArray.get(j);
+                    if (comparator.compare(personArray.get(j),personArray.get(j+1)) > 0) {
+                        IPerson temp = personArray.get(j);
                         personArray.set(j,personArray.get(j+1));
                         personArray.set(j+1,temp);
                     }
@@ -37,22 +42,8 @@ public class PersonArrayTest {
         }
 
     }
-    class SelectionSort implements PersonArray.SortInterface {
 
-        @Override
-        public void sort(PersonArray.SortCompere compare, PersonArray personArray) {
-            for (int i = 0; i < personArray.length() - 1; i++) {
-                for (int j = i + 1; j <personArray.length(); j++) {
-                    if (compare.compare(personArray.get(i),personArray.get(j))) {
-                        Person temp = personArray.get(i);
-                        personArray.set(i,personArray.get(j));
-                        personArray.set(j,temp);
-                    }
-                }
-            }
-        }
 
-    }
     @Before
     public void initTest() {
         Random random = new Random();
@@ -61,10 +52,12 @@ public class PersonArrayTest {
             array.add(new Person(new LocalDate(random.nextInt((MAX_YEAR - MIN_YEAR) + 1) + MIN_YEAR,
                     random.nextInt(MAX_MONTH) + 1,
                     random.nextInt(MAX_DAY) + 1),
-                    random.nextInt(MAX_PASSPORT_ID - MIN_PASSPORT_ID) + MIN_PASSPORT_ID, Person.Gender.MAN,
+                    random.nextInt(MAX_PASSPORT_ID - MIN_PASSPORT_ID) + MIN_PASSPORT_ID, Gender.MALE,
                     "PersonName" + i,
                     "PersonSurname" + i,
-                    "PersonMiddleName" + i));
+                    "PersonMiddleName" + i,
+                    null,
+                    new BigDecimal(random.nextInt())));
         }
     }
 
@@ -73,47 +66,30 @@ public class PersonArrayTest {
         array = null;
     }
 
-    private boolean testSort(PersonArray.SortInterface sortInterface) {
-        array.sortArray((p1,p2) -> p1.getPassportID() < p2.getPassportID(),sortInterface);
+
+    @Test
+    public void sortByTest() {
+        array.sortBy(Comparator.comparing(IPerson::getAge), new BubbleSort());
         boolean temp = false;
         for (int i = 0; i < array.length()-1; i++) {
             if (temp) {
                 break;
             }
-            temp = array.get(i).getPassportID() < array.get(i+1).getPassportID();
+            temp = array.get(i).getAge().compareTo(array.get(i+1).getAge()) > 0;
         }
-        return temp;
+        assertFalse(temp);
     }
 
     @Test
-    public void sortArrayTest() {
-        assertFalse(testSort(new BubbleSort()));
-        assertFalse(testSort(new SelectionSort()));
-    }
-
-    @Test
-    public void getArray() {
-        PersonArray temp = array.getArray((p) -> p.getAge() > 12);
+    public void searchBy() {
+        IRepository temp = array.searchBy((p) -> p.getAge() > 12);
         boolean test = true;
-        for (int i = 0; i < temp.length(); i++) {
+        for (int i = 0; temp.get(i)!=null; i++) {
             test = temp.get(i).getAge() > 12;
             if (!test) {
                 break;
             }
         }
         assertTrue(test);
-    }
-
-    @Test
-    public void getTest() {
-        Person a = array.get(19);
-        Person temp = array.get((p) -> p.getAge() == a.getAge());
-        assertEquals(temp.getAge(),a.getAge());
-        temp = array.get((p) -> p.equals(a));
-        assertEquals(temp,a);
-        temp = array.get((p) -> p == a);
-        assertSame(temp,a);
-        temp = array.get((p) -> p.getAge() > 200);
-        assertNull(temp);
     }
 }

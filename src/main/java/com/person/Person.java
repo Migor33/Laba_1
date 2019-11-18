@@ -1,86 +1,166 @@
 package com.person;
 
+import com.person.enums.Gender;
+import com.person.personInterface.IDivision;
+import com.person.personInterface.IPerson;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
+
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
  * Class for storing information about human.
  */
-public class Person implements Cloneable {
+public class Person implements Cloneable, IPerson {
+
+
+    private LocalDate birthdate;
+    private Integer id;
+    private Gender gender;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private IDivision division;
+    private BigDecimal salary;
+
+
     /**
-     * Gender of person.
+     * @param birthdate person's day of born.
+     * @param id person's passport id.
+     * @param gender person's gender.
+     * @param firstName person's firstName.
+     * @param lastName person's lastName.
+     * @param middleName person's middle firstName.
+     * @param division division.
+     * @param salary salary.
      */
-    public enum Gender {
-        MAN,
-        WOMEN
+    public Person(LocalDate birthdate, int id, Gender gender, String firstName, String lastName, String middleName, IDivision division, BigDecimal salary) {
+        this.birthdate = birthdate;
+        this.id = id;
+        this.gender = gender;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.division = division;
+        this.salary = salary;
     }
 
-    private LocalDate dayOfBorn;
-    private int passportID;
-    private Gender gender;
-    private String name;
-    private String surname;
-    private String middleName;
+    /**
+     * Constructor for PersonArrayReader.
+     * can't be used outside the package.
+     */
+    Person() {
+    }
+
+    /**
+     *
+     * @return person's salary.
+     */
+    @Override
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    /**
+     *
+     * @param salary new salary.
+     */
+    @Override
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    /**
+     *
+     * @return person's division.
+     */
+    @Override
+    public IDivision getDivision() {
+        return division;
+    }
+
+    /**
+     *
+     * @param division new division.
+     */
+    @Override
+    public void setDivision(IDivision division) {
+        this.division = division;
+    }
+
+    /**
+     *
+     * @return person's birth date.
+     */
+    @Override
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
 
     /**
      * Change person's day of born.
-     * @param dayOfBorn new day of born.
+     * @param birthdate new day of born.
      */
-    public void setDayOfBorn(LocalDate dayOfBorn) {
-        this.dayOfBorn = dayOfBorn;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     /**
      * Change passport id.
-     * @param passportID new passport id.
+     * @param id new passport id.
      */
-    public void setPassportID(int passportID) {
-        this.passportID = passportID;
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     *  searchBy passport id
+     * @return id.
+     */
+    @Override
+    public Integer getId() {
+        return id;
     }
 
     /**
      * Change person's gender.
      * @param gender новый пол.
      */
+    @Override
     public void setGender(Gender gender) {
         this.gender = gender;
     }
 
     /**
-     * Change person's name.
-     * @param name new name.
+     * Change person's firstName.
+     * @param name new firstName.
      */
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
     /**
-     * Change person's surname.
-     * @param surname new surname.
+     * Change person's lastName.
+     * @param surname new lastName.
      */
-    public void setSurname(String surname) {
-        this.surname = surname;
+    @Override
+    public void setLastName(String surname) {
+        this.lastName = surname;
     }
 
     /**
-     * Change person's middle name.
-     * @param middleName новое отчетсво.
+     * Change person's middleName.
+     * @param middleName new middleName.
      */
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
     /**
-     *  get passport id
-     * @return passportID.
-     */
-    public int getPassportID() {
-        return passportID;
-    }
-
-    /**
-     * get person's gander in Person.Gender type.
+     * searchBy person's gander in Person.Gender type.
      * @return gender.
      */
     public Gender getGender() {
@@ -88,23 +168,25 @@ public class Person implements Cloneable {
     }
 
     /**
-     * get person's name in String type.
-     * @return name.
+     * searchBy person's firstName in String type.
+     * @return firstName.
      */
-    public String getName() {
-        return name;
+    @Override
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * get person's surname in String type.
-     * @return surname.
+     * searchBy person's lastName in String type.
+     * @return lastName.
      */
-    public String getSurname() {
-        return surname;
+    @Override
+    public String getLastName() {
+        return lastName;
     }
 
     /**
-     * get person's middle name in String type..
+     * searchBy person's middle firstName in String type..
      * @return middleName.
      */
     public String getMiddleName() {
@@ -116,58 +198,42 @@ public class Person implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return passportID == person.passportID &&
-                dayOfBorn.equals(person.dayOfBorn) &&
+        return id == person.id &&
+                birthdate.equals(person.birthdate) &&
                 gender == person.gender &&
-                name.equals(person.name) &&
-                surname.equals(person.surname) &&
+                firstName.equals(person.firstName) &&
+                lastName.equals(person.lastName) &&
                 middleName.equals(person.middleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dayOfBorn, passportID, gender, name, surname, middleName);
+        return Objects.hash(birthdate, id, gender, firstName, lastName, middleName);
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "dayOfBorn=" + dayOfBorn +
-                ", passportID=" + passportID +
+                "birthdate=" + birthdate +
+                ", id=" + id +
                 ", gender=" + gender +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 '}';
     }
 
     /**
-     * @param dayOfBorn person's day of born.
-     * @param passportID person's passport id.
-     * @param gender person's gender.
-     * @param name person's name.
-     * @param surname person's surname.
-     * @param middleName person's middle name.
-     */
-    public Person(LocalDate dayOfBorn, int passportID, Gender gender, String name, String surname, String middleName) {
-        this.dayOfBorn = dayOfBorn;
-        this.passportID = passportID;
-        this.gender = gender;
-        this.name = name;
-        this.surname = surname;
-        this.middleName = middleName;
-    }
-
-    /**
-     * get person's Age.
+     * searchBy person's Age.
      * @return age in int type
      */
-    public int getAge() {
-       return Years.yearsBetween(dayOfBorn, new LocalDate()).getYears();
+    @Override
+    public Integer getAge() {
+       return Years.yearsBetween(birthdate, new LocalDate()).getYears();
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 }

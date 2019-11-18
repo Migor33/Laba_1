@@ -1,62 +1,65 @@
 package com.person;
 
-import java.util.Arrays;
+import com.person.personInterface.IPerson;
+import com.person.personInterface.IRepository;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 /**
  * Array-based Person list.
  */
-public class PersonArray {
-    private Person[] array;
-    private int head;
-
-    public interface SortCompere {
-        boolean compare(Person p1,Person p2);
-    }
-
-    public interface SortInterface {
-        void sort(SortCompere compare, PersonArray personArray);
-    }
-
-    public void sortArray(SortCompere compere, SortInterface sort) {
-        sort.sort(compere, this);
-    }
-
-    public interface GetCriterionInterface {
-        boolean criterion(Person person);
-    }
-
-    public Person get(GetCriterionInterface getCriterionInterface) {
-        for (Person temp:
-             array) {
-            if (getCriterionInterface.criterion(temp)) {
-                return temp;
-            }
-        }
-        return null;
-    }
-
-    public PersonArray getArray(GetCriterionInterface getCriterionInterface) {
-        PersonArray newArray = new PersonArray();
-        for (Person temp :
-                array) {
-            if (getCriterionInterface.criterion(temp)) {
-                newArray.add(temp);
-            }
-        }
-        return newArray;
-    }
-
+public class PersonArray implements IRepository {
     /**
      * Start array.length().
      * Also the value by which the array expands.
      */
     private static final int DEFAULT_LENGTH = 10;
+    private static Logger log = Logger.getLogger(PersonArray.class.getName());
+
+    private IPerson[] array;
+    Integer head;
+
+
+    /**
+     * Interface for sorting
+     */
+    public interface SortInterface {
+
+        void sort(Comparator<IPerson> comparator, PersonArray personArray);
+
+    }
+
+    /**
+     * Selection Sort
+     * using in default sort.
+     */
+    class SelectionSort implements PersonArray.SortInterface {
+
+        @Override
+        public void sort(Comparator<IPerson> comparator, PersonArray personArray) {
+            for (int i = 0; i < personArray.length() - 1; i++) {
+                for (int j = i + 1; j <personArray.length(); j++) {
+                    int compare = comparator.compare(personArray.get(i),personArray.get(j));
+                    if (compare > 0) {
+                        IPerson temp = personArray.get(i);
+                        personArray.set(i,personArray.get(j));
+                        personArray.set(j,temp);
+                    }
+                }
+            }
+        }
+
+    }
+
 
     /**
      * Default constructor, that create array whit length = DEFAULT_LENGTH.
      */
     public PersonArray() {
-        array = new Person[DEFAULT_LENGTH];
+        array = new IPerson[DEFAULT_LENGTH];
         head = -1;
     }
 
@@ -86,13 +89,28 @@ public class PersonArray {
     }
 
     /**
-     * add one element in end of list.
+     * add one element in list.
      * if the array haven't any free place than expands array by DEFAULT_LENGTH.
-     * @param a element to add.
+     * @param index place for adding
+     * @param person element to add.
      */
-    public void add(Person a) {
+    public void add(int index, IPerson person) {
+        try {
+            array[index] = person;
+        }
+        catch (ArrayIndexOutOfBoundsException a) {
+            log.info((Supplier<String>) a);
+        }
+    }
+
+    /**
+     * add one person in array's end
+     * @param a person for adding to array
+     */
+    @Override
+    public void add(IPerson a) {
         if (++head >= array.length) {
-            Person[] newArray = new Person[array.length + DEFAULT_LENGTH];
+            IPerson[] newArray = new IPerson[array.length + DEFAULT_LENGTH];
             System.arraycopy(array, 0, newArray, 0, head);
             newArray[head] = a;
             array = newArray;
@@ -101,47 +119,74 @@ public class PersonArray {
         }
     }
 
+
     /**
-     * add an array of Persons in end of the list.
-     * if the array haven't any free place than expands by the required places.
-     * @param array array to add.
+     * Sort array by passed sort and comparator.
+     * @param comparator
+     * @param sort
      */
-    public void add(Person[] array) {
-        if (head + array.length > this.array.length) {
-            Person[] newArray = new Person[array.length + head + 1];
-            System.arraycopy(this.array, 0, newArray, 0, head + 1);
-            for (int i = this.array.length, j = 0; j < array.length; i++, j++) {
-                newArray[i] = array[j];
-            }
-            this.array = newArray;
-        } else {
-            for (int i = head + 1, j = 0; j < array.length; i++, j++) {
-                this.array[i] = array[j];
+    public void sortBy(Comparator<IPerson> comparator, SortInterface sort) {
+        sort.sort(comparator, this);
+    }
+
+    /**
+     * default sort by passed comparator.
+     * @param comparator
+     */
+    @Override
+    public void sortBy(Comparator<IPerson> comparator) {
+        sortBy(comparator,new SelectionSort());
+    }
+
+    /**
+     * convert the PersonArray in List
+     * @return result list
+     */
+    @Override
+    public List<IPerson> toList() {
+        List<IPerson> list = new ArrayList<IPerson>(head+1);
+        for (int i = 0; i < head + 1; i++) {
+            list.add(array[i]);
+        }
+        return null;
+    }
+
+    /**
+     * Search subarray by passed predicate
+     * @param personPredicate predicate
+     * @return IRepository
+     */
+    @Override
+    public IRepository searchBy(Predicate<IPerson> personPredicate) {
+        PersonArray newRepository = new PersonArray();
+        for (IPerson temp :
+                array) {
+            if (personPredicate.test(temp)) {
+                newRepository.add(temp);
             }
         }
-        head += array.length;
+        return newRepository;
     }
+
 
     /**
      * return element with passed index .
      * @param index element's index.
      * @return element of list.
      */
-    public Person get(int index) {
-        return array[index];
+    @Override
+    public IPerson get(int index) {
+        IPerson temp = null;
+        if (index < array.length) {
+            temp = array[index];
+        }
+        return temp;
     }
 
     /**
-     * @return count of elements in array.
+     * @return count of places in array.
      */
     public int length() {
-        return head + 1;
-    }
-
-    /**
-     * @return count og places in array.
-     */
-    public int arraySize() {
         return array.length;
     }
 
@@ -150,27 +195,15 @@ public class PersonArray {
      * Shift left all elements after deleted element
      * @param index удаляемый элемент.
      */
-    public void delete(int index) {
-        this.delete(index, 1);
-    }
-
-    /**
-     * delete several elements.
-     * Shift left all elements after deleted elements.
-     * @param index first element for deleting.
-     * @param count count elements, that need to delete.
-     */
-    public void delete(int index, int count) {
-        int end;
-        if (head - count > index) {
-            System.arraycopy(array, index+count, array, index, head - count - index + 1);
-            head -= count;
-        } else {
-            head = index;
+    @Override
+    public IPerson delete(int index) {
+       IPerson temp = array[index];
+        for (int i = index; i < head; i++) {
+            array[i]=array[i+1];
         }
-        for (int i = head + 1; i < array.length; i++) {
-            array[i] = null;
-        }
+        array[head]=null;
+        head--;
+       return temp;
     }
 
     /**
@@ -178,25 +211,16 @@ public class PersonArray {
      * @param index element's index.
      * @param value new element.
      */
-    public void set(int index, Person value) {
-        if (index <= head) {
+    @Override
+    public IPerson set(int index, IPerson value) {
+        try {
+            IPerson temp = array[index];
             array[index] = value;
+            return temp;
+        } catch (ArrayIndexOutOfBoundsException a) {
+            log.info((Supplier<String>) a);
+            return null;
         }
-    }
-
-    /**
-     * cut all free places.
-     * always let DEFAULT_LENGTH places.
-     */
-    public void cutSize() {
-        Person[] newArray;
-        if (head < DEFAULT_LENGTH) {
-            newArray = new Person[DEFAULT_LENGTH];
-        } else {
-            newArray = new Person[head + 1];
-        }
-        System.arraycopy(array, 0, newArray, 0, head + 1);
-        array = newArray;
     }
 
     @Override
