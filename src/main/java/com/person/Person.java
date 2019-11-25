@@ -1,12 +1,12 @@
 package com.person;
 
-import com.person.enums.Gender;
-import com.person.personInterface.IDivision;
-import com.person.personInterface.IPerson;
-import org.joda.time.LocalDate;
-import org.joda.time.Years;
+import ru.vsu.lab.entities.IDivision;
+import ru.vsu.lab.entities.IPerson;
+import ru.vsu.lab.entities.enums.Gender;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 /**
@@ -50,7 +50,7 @@ public class Person implements Cloneable, IPerson {
      * Constructor for PersonArrayReader.
      * can't be used outside the package.
      */
-    Person() {
+    public Person() {
     }
 
     /**
@@ -90,7 +90,7 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     *
+     * get person's birth date
      * @return person's birth date.
      */
     @Override
@@ -116,7 +116,7 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     *  searchBy passport id
+     *  get passport id
      * @return id.
      */
     @Override
@@ -128,7 +128,6 @@ public class Person implements Cloneable, IPerson {
      * Change person's gender.
      * @param gender новый пол.
      */
-    @Override
     public void setGender(Gender gender) {
         this.gender = gender;
     }
@@ -160,7 +159,7 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     * searchBy person's gander in Person.Gender type.
+     * get person's gander in Person.Gender type.
      * @return gender.
      */
     public Gender getGender() {
@@ -168,7 +167,7 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     * searchBy person's firstName in String type.
+     * get person's firstName in String type.
      * @return firstName.
      */
     @Override
@@ -177,7 +176,7 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     * searchBy person's lastName in String type.
+     * get person's lastName in String type.
      * @return lastName.
      */
     @Override
@@ -186,7 +185,7 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     * searchBy person's middle firstName in String type..
+     * get person's middle firstName in String type..
      * @return middleName.
      */
     public String getMiddleName() {
@@ -224,12 +223,13 @@ public class Person implements Cloneable, IPerson {
     }
 
     /**
-     * searchBy person's Age.
+     * aet person's Age.
      * @return age in int type
      */
     @Override
     public Integer getAge() {
-       return Years.yearsBetween(birthdate, new LocalDate()).getYears();
+        Period period = Period.between(birthdate, LocalDate.now());
+       return period.getYears();
     }
 
     @Override

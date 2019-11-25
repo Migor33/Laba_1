@@ -1,25 +1,22 @@
-package com.person;
+package com.person.division;
 
-import com.person.personInterface.IDivision;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.vsu.lab.entities.IDivision;
 
 public class Division  implements IDivision {
 
     Integer id;
     String name;
-    static Integer lastId = -1;
-    static List<IDivision> exsistDivision = new ArrayList<>();
 
     /**
      * Constructor assigning id for a division.
      * @param name name of division.
      */
-    public Division(String name) {
-        this.id = ++lastId;
+    public Division(String name, Integer id) {
+        this.id = id;
         this.name = name;
-        exsistDivision.add(this);
+    }
+
+    public Division() {
     }
 
     /**

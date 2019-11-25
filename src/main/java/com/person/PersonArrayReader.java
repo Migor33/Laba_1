@@ -1,12 +1,16 @@
 package com.person;
 
-import com.person.enums.Gender;
 import com.person.enums.ReaderStage;
-import com.person.personInterface.IDivision;
-import com.person.personInterface.IRepository;
 import com.person.personInterface.IRepositoryReader;
-import org.joda.time.LocalDate;
 
+import ru.vsu.lab.entities.IDivision;
+import ru.vsu.lab.entities.IPerson;
+import ru.vsu.lab.entities.enums.Gender;
+import ru.vsu.lab.factory.ILabFactory;
+import ru.vsu.lab.repository.IRepository;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,12 +21,14 @@ public class PersonArrayReader implements IRepositoryReader {
 
     /**
      * read PersonArray from scanner
+     * scanner will be closed.
      * @param scanner scanner
      * @return IRepository
      */
     @Override
-    public IRepository readRepository(Scanner scanner) {
-        IRepository personArray = new PersonArray();
+    public IRepository readRepository(Scanner scanner, ILabFactory factory) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        IRepository personArray = factory.createRepository(Person.class);
         Scanner tempScanner = new Scanner(scanner.nextLine());
         tempScanner.useDelimiter(";");
         for (int i = 0;tempScanner.hasNext();i++) {
@@ -42,9 +48,10 @@ public class PersonArrayReader implements IRepositoryReader {
             } else readerStage.add(null);
         }
         while(scanner.hasNext()) {
+            tempScanner.close();
             tempScanner = new Scanner(scanner.nextLine());
-            tempScanner.useDelimiter("[;]");
-            Person person = new Person();
+            tempScanner.useDelimiter(";");
+            IPerson person = factory.createPerson();
             for (int i = 0;tempScanner.hasNext(); i++) {
                 switch (readerStage.get(i)) {
                     case ID:
@@ -65,15 +72,10 @@ public class PersonArrayReader implements IRepositoryReader {
                         person.setSalary(tempScanner.nextBigDecimal());
                         break;
                     case DIVISION:
-                        person.setDivision(readDivision(tempScanner.next()));
+                        person.setDivision(readDivision(tempScanner.next(),factory));
                         break;
                     case BIRT_DATE:
-                        tempScanner.useDelimiter("[;.]");
-                        int day = tempScanner.nextInt();
-                        int month = tempScanner.nextInt();
-                        int year = tempScanner.nextInt();
-                        tempScanner.useDelimiter("[;]");
-                        person.setBirthdate(new LocalDate(year,month,day));
+                        person.setBirthdate(LocalDate.parse(tempScanner.next(),formatter));
                         break;
                     default:
                         tempScanner.next();
@@ -82,6 +84,8 @@ public class PersonArrayReader implements IRepositoryReader {
             }
             personArray.add(person);
         }
+        tempScanner.close();
+        scanner.close();
         return personArray;
     }
 
@@ -91,13 +95,17 @@ public class PersonArrayReader implements IRepositoryReader {
      * @param a name of division.
      * @return division with this name.
      */
-    IDivision readDivision(String a) {
-        for (int i = 0; i < Division.exsistDivision.size(); i++) {
-            IDivision temp = Division.exsistDivision.get(i);
+    IDivision readDivision(String a, ILabFactory factory) {
+        for (int i = 0; i < MyRepository.existDivision.size(); i++) {
+            IDivision temp = MyRepository.existDivision.get(i);
             if (a.equals(temp.getName())) {
                 return temp;
             }
         }
-        return new Division(a);
+        IDivision division = factory.createDivision();
+        division.setName(a);
+        division.setId(MyRepository.existDivision.size());
+        MyRepository.existDivision.add(division);
+        return division;
     }
 }
