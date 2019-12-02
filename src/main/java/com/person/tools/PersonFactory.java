@@ -39,7 +39,7 @@ public class PersonFactory implements ILabFactory {
      */
     @Override
     public <T> IRepository<T> createRepository(Class<T> clazz) {
-        return new MyRepository<T>();
+        return Reflector.reflect(new MyRepository<T>());
     }
 
     @Override
