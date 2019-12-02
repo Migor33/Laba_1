@@ -1,6 +1,8 @@
 package com.person;
 
-import com.person.factory.PersonFactory;
+import com.person.tools.PersonFactory;
+import com.person.tools.PersonArrayReader;
+import com.person.tools.Reflector;
 import org.junit.Test;
 
 import java.io.File;

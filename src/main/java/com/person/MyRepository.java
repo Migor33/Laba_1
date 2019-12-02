@@ -1,5 +1,6 @@
 package com.person;
 
+import com.person.anotation.Reflected;
 import com.person.personInterface.SortInterface;
 
 import ru.vsu.lab.entities.IDivision;
@@ -22,30 +23,11 @@ public class MyRepository<T> implements IRepository<T> {
     private static final int DEFAULT_LENGTH = 10;
     public static List<IDivision> existDivision = new ArrayList<>();
 
+    @Reflected
+    private SortInterface<T> sort;
+
     private Object[] array;
     Integer head;
-
-    /**
-     * Selection Sort
-     * using in default sort.
-     */
-    class SelectionSort<T> implements SortInterface<T> {
-
-        @Override
-        public void sort(Comparator<T> comparator, MyRepository<T> myRepository) {
-            for (int i = 0; i < myRepository.length() - 1; i++) {
-                for (int j = i + 1; j < myRepository.length(); j++) {
-                    int compare = comparator.compare(myRepository.get(i), myRepository.get(j));
-                    if (compare > 0) {
-                        T temp = myRepository.get(i);
-                        myRepository.set(i, myRepository.get(j));
-                        myRepository.set(j,temp);
-                    }
-                }
-            }
-        }
-
-    }
 
 
     /**
@@ -107,7 +89,7 @@ public class MyRepository<T> implements IRepository<T> {
      */
     @Override
     public void sortBy(Comparator<T> comparator) {
-        sortBy(comparator,new SelectionSort());
+        sortBy(comparator,sort);
     }
 
     /**

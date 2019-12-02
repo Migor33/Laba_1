@@ -1,5 +1,7 @@
-package com.person;
+package com.person.tools;
 
+import com.person.MyRepository;
+import com.person.Person;
 import com.person.enums.ReaderStage;
 import com.person.personInterface.IRepositoryReader;
 

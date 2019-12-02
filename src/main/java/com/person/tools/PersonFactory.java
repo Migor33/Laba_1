@@ -1,4 +1,4 @@
-package com.person.factory;
+package com.person.tools;
 
 import com.person.Person;
 import com.person.MyRepository;
