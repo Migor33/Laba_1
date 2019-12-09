@@ -1,7 +1,7 @@
 package com.person.tools;
 
-import com.person.MyRepository;
-import com.person.anotation.Reflected;
+import com.person.anotation.Injected;
+import com.person.exceptions.InjectFailedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,22 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Reflector {
-    public static MyRepository reflect(MyRepository repository) {
+/**
+ * Injector.
+ */
+public class Injector {
+
+    /**
+     * inject repository fields.
+     * @param repository repository.
+     * @param <T> type of elements.
+     * @return repository
+     * @throws InjectFailedException exceptions.
+     */
+    public static <T> T inject(T repository) throws InjectFailedException {
         Field[] allFields = repository.getClass().getDeclaredFields();
         List<Field> reflectedFields = new ArrayList<>();
         File file = new File("src\\main\\resources\\properties");
         for (Field field:
              allFields) {
-            if  (field.getAnnotation(Reflected.class)!=null)
+            if  (field.isAnnotationPresent(Injected.class))
                 reflectedFields.add(field);
         }
         Scanner scanner;
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException a) {
-            System.out.println(a.getClass().getName());
-            return repository;
+            throw new InjectFailedException(a);
         }
         scanner.useDelimiter(" = |\n");
         while(scanner.hasNext()) {
@@ -38,11 +48,11 @@ public class Reflector {
                     try {
                         field.set(repository, Class.forName(className).newInstance());
                     } catch (ClassNotFoundException a) {
-                        System.out.println(a.getClass().getName());
+                        throw new InjectFailedException(a);
                     } catch (IllegalAccessException a) {
-                        System.out.println(a.getClass().getName());
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
+                        throw new InjectFailedException(a);
+                    } catch (InstantiationException a) {
+                        throw new InjectFailedException(a);
                     }
                 }
             }

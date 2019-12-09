@@ -1,8 +1,7 @@
 package com.person;
 
+import com.person.tools.MyRepositoryReader;
 import com.person.tools.PersonFactory;
-import com.person.tools.PersonArrayReader;
-import com.person.tools.Reflector;
 import org.junit.Test;
 
 import java.io.File;
@@ -18,7 +17,7 @@ public class MyRepositoryReaderTest {
     @Test
     public void readRepository() throws FileNotFoundException {
         File file = new File("src\\main\\resources\\persons.csv");
-        PersonArrayReader reader = new PersonArrayReader();
+        MyRepositoryReader reader = new MyRepositoryReader();
         MyRepository myRepository =  (MyRepository)reader.readRepository(new Scanner(file), new PersonFactory());
         assertEquals(COUNT_PERSON_IN_FILE,myRepository.length());
     }

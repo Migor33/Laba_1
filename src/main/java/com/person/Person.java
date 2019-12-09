@@ -7,21 +7,43 @@ import ru.vsu.lab.entities.enums.Gender;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
 
 /**
  * Class for storing information about human.
  */
-public class Person implements Cloneable, IPerson {
+public class Person implements IPerson {
 
-
+    /**
+     * person birth date.
+     */
     private LocalDate birthdate;
+    /**
+     * person id.
+     */
     private Integer id;
+    /**
+     * person gender.
+     */
     private Gender gender;
+    /**
+     * person first name.
+     */
     private String firstName;
+    /**
+     * person last name.
+     */
     private String lastName;
+    /**
+     * person middle name.
+     */
     private String middleName;
+    /**
+     * person division.
+     */
     private IDivision division;
+    /**
+     * person salary.
+     */
     private BigDecimal salary;
 
 
@@ -35,7 +57,14 @@ public class Person implements Cloneable, IPerson {
      * @param division division.
      * @param salary salary.
      */
-    public Person(LocalDate birthdate, int id, Gender gender, String firstName, String lastName, String middleName, IDivision division, BigDecimal salary) {
+    public Person(final LocalDate birthdate,
+                  final int id,
+                  final Gender gender,
+                  final String firstName,
+                  final String lastName,
+                  final String middleName,
+                  final IDivision division,
+                  final BigDecimal salary) {
         this.birthdate = birthdate;
         this.id = id;
         this.gender = gender;
@@ -58,7 +87,7 @@ public class Person implements Cloneable, IPerson {
      * @return person's salary.
      */
     @Override
-    public BigDecimal getSalary() {
+    public final BigDecimal getSalary() {
         return salary;
     }
 
@@ -67,7 +96,7 @@ public class Person implements Cloneable, IPerson {
      * @param salary new salary.
      */
     @Override
-    public void setSalary(BigDecimal salary) {
+    public final void setSalary(final BigDecimal salary) {
         this.salary = salary;
     }
 
@@ -76,7 +105,7 @@ public class Person implements Cloneable, IPerson {
      * @return person's division.
      */
     @Override
-    public IDivision getDivision() {
+    public final IDivision getDivision() {
         return division;
     }
 
@@ -85,16 +114,16 @@ public class Person implements Cloneable, IPerson {
      * @param division new division.
      */
     @Override
-    public void setDivision(IDivision division) {
+    public final void setDivision(final IDivision division) {
         this.division = division;
     }
 
     /**
-     * get person's birth date
+     * get person's birth date.
      * @return person's birth date.
      */
     @Override
-    public LocalDate getBirthdate() {
+    public final LocalDate getBirthdate() {
         return birthdate;
     }
 
@@ -102,7 +131,7 @@ public class Person implements Cloneable, IPerson {
      * Change person's day of born.
      * @param birthdate new day of born.
      */
-    public void setBirthdate(LocalDate birthdate) {
+    public final void setBirthdate(final LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -111,16 +140,16 @@ public class Person implements Cloneable, IPerson {
      * @param id new passport id.
      */
     @Override
-    public void setId(Integer id) {
+    public final void setId(final Integer id) {
         this.id = id;
     }
 
     /**
-     *  get passport id
+     * get passport id.
      * @return id.
      */
     @Override
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
@@ -128,7 +157,7 @@ public class Person implements Cloneable, IPerson {
      * Change person's gender.
      * @param gender новый пол.
      */
-    public void setGender(Gender gender) {
+    public final void setGender(final Gender gender) {
         this.gender = gender;
     }
 
@@ -137,7 +166,7 @@ public class Person implements Cloneable, IPerson {
      * @param name new firstName.
      */
     @Override
-    public void setFirstName(String name) {
+    public final void setFirstName(final String name) {
         this.firstName = name;
     }
 
@@ -146,7 +175,7 @@ public class Person implements Cloneable, IPerson {
      * @param surname new lastName.
      */
     @Override
-    public void setLastName(String surname) {
+    public final void setLastName(final String surname) {
         this.lastName = surname;
     }
 
@@ -154,7 +183,7 @@ public class Person implements Cloneable, IPerson {
      * Change person's middleName.
      * @param middleName new middleName.
      */
-    public void setMiddleName(String middleName) {
+    public final void setMiddleName(final String middleName) {
         this.middleName = middleName;
     }
 
@@ -162,7 +191,7 @@ public class Person implements Cloneable, IPerson {
      * get person's gander in Person.Gender type.
      * @return gender.
      */
-    public Gender getGender() {
+    public final Gender getGender() {
         return gender;
     }
 
@@ -171,7 +200,7 @@ public class Person implements Cloneable, IPerson {
      * @return firstName.
      */
     @Override
-    public String getFirstName() {
+    public final String getFirstName() {
         return firstName;
     }
 
@@ -180,7 +209,7 @@ public class Person implements Cloneable, IPerson {
      * @return lastName.
      */
     @Override
-    public String getLastName() {
+    public final String getLastName() {
         return lastName;
     }
 
@@ -188,38 +217,8 @@ public class Person implements Cloneable, IPerson {
      * get person's middle firstName in String type..
      * @return middleName.
      */
-    public String getMiddleName() {
+    public final String getMiddleName() {
         return middleName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return id == person.id &&
-                birthdate.equals(person.birthdate) &&
-                gender == person.gender &&
-                firstName.equals(person.firstName) &&
-                lastName.equals(person.lastName) &&
-                middleName.equals(person.middleName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(birthdate, id, gender, firstName, lastName, middleName);
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "birthdate=" + birthdate +
-                ", id=" + id +
-                ", gender=" + gender +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                '}';
     }
 
     /**
@@ -227,13 +226,8 @@ public class Person implements Cloneable, IPerson {
      * @return age in int type
      */
     @Override
-    public Integer getAge() {
+    public final Integer getAge() {
         Period period = Period.between(birthdate, LocalDate.now());
        return period.getYears();
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }

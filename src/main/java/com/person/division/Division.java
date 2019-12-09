@@ -2,20 +2,32 @@ package com.person.division;
 
 import ru.vsu.lab.entities.IDivision;
 
+/**
+ * preson Division.
+ */
 public class Division  implements IDivision {
-
-    Integer id;
-    String name;
+    /**
+     * division id.
+     */
+    private Integer id;
+    /**
+     * division name.
+     */
+    private String name;
 
     /**
      * Constructor assigning id for a division.
      * @param name name of division.
+     * @param id division id.
      */
-    public Division(String name, Integer id) {
+    public Division(final String name, final Integer id) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * default constructor.
+     */
     public Division() {
     }
 
@@ -23,7 +35,7 @@ public class Division  implements IDivision {
      * @return Division's id
      */
     @Override
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
@@ -32,7 +44,7 @@ public class Division  implements IDivision {
      * @param id new id
      */
     @Override
-    public void setId(Integer id) {
+    public final void setId(final Integer id) {
         this.id = id;
     }
 
@@ -41,7 +53,7 @@ public class Division  implements IDivision {
      * @return Division's name
      */
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
@@ -50,7 +62,7 @@ public class Division  implements IDivision {
      * @param name new name
      */
     @Override
-    public void setName(String name) {
+    public final void setName(final String name) {
         this.name = name;
     }
 }

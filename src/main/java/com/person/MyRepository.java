@@ -1,19 +1,18 @@
 package com.person;
 
-import com.person.anotation.Reflected;
+import com.person.anotation.Injected;
 import com.person.personInterface.SortInterface;
-
 import ru.vsu.lab.entities.IDivision;
 import ru.vsu.lab.repository.IRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
 /**
  * Array-based Person list.
+ * @param <T> type of elements.
  */
 public class MyRepository<T> implements IRepository<T> {
     /**
@@ -21,13 +20,25 @@ public class MyRepository<T> implements IRepository<T> {
      * Also the value by which the array expands.
      */
     private static final int DEFAULT_LENGTH = 10;
+    /**
+     * Divisions List.
+     */
     public static List<IDivision> existDivision = new ArrayList<>();
 
-    @Reflected
+    /**
+     * default sort.
+     */
+    @Injected
     private SortInterface<T> sort;
 
+    /**
+     * array of elements.
+     */
     private Object[] array;
-    Integer head;
+    /**
+     * last element.
+     */
+    private Integer head;
 
 
     /**
@@ -35,14 +46,14 @@ public class MyRepository<T> implements IRepository<T> {
      */
     public MyRepository() {
         array = new Object[DEFAULT_LENGTH];
-        head = -1;
+        head=-1;
     }
 
     /**
      * Constructor, that create array whit length = size.
      * @param size length of array.
      */
-    public MyRepository(int size) {
+    public MyRepository(final int size) {
         array = new Object[size];
         head = -1;
     }
@@ -53,7 +64,7 @@ public class MyRepository<T> implements IRepository<T> {
      * @param index place for adding
      * @param person element to add.
      */
-    public void add(int index, T person) {
+    public void add(final int index,final T person) {
         array[index] = person;
     }
 
@@ -62,7 +73,7 @@ public class MyRepository<T> implements IRepository<T> {
      * @param a person for adding to array
      */
     @Override
-    public void add(T a) {
+    public void add(final T a) {
         if (++head >= array.length) {
             Object[] newArray = new Object[array.length + DEFAULT_LENGTH];
             System.arraycopy(array, 0, newArray, 0, head);
@@ -77,20 +88,11 @@ public class MyRepository<T> implements IRepository<T> {
     /**
      * Sort array by passed sort and comparator.
      * @param comparator
-     * @param sort
      */
-    public void sortBy(Comparator<T> comparator, SortInterface sort) {
+    public void sortBy(final Comparator<T> comparator) {
         sort.sort(comparator, this);
     }
 
-    /**
-     * default sort by passed comparator.
-     * @param comparator
-     */
-    @Override
-    public void sortBy(Comparator<T> comparator) {
-        sortBy(comparator,sort);
-    }
 
     /**
      * convert the PersonArray in List
@@ -102,7 +104,7 @@ public class MyRepository<T> implements IRepository<T> {
         for (int i = 0; i < head + 1; i++) {
             list.add((T)array[i]);
         }
-        return null;
+        return list;
     }
 
     /**
@@ -111,7 +113,7 @@ public class MyRepository<T> implements IRepository<T> {
      * @return IRepository
      */
     @Override
-    public IRepository<T> searchBy(Predicate<T> personPredicate) {
+    public IRepository<T> searchBy(final Predicate<T> personPredicate) {
         MyRepository newRepository = new MyRepository();
         for (Object temp :
                 array) {
@@ -129,7 +131,7 @@ public class MyRepository<T> implements IRepository<T> {
      * @return element of list.
      */
     @Override
-    public T get(int index) {
+    public T get(final int index) {
         Object temp = null;
         if (index < array.length) {
             temp = array[index];
@@ -150,7 +152,7 @@ public class MyRepository<T> implements IRepository<T> {
      * @param index удаляемый элемент.
      */
     @Override
-    public T delete(int index) {
+    public T delete(final int index) {
        Object temp = array[index];
         for (int i = index; i < head; i++) {
             array[i]=array[i+1];
@@ -166,16 +168,9 @@ public class MyRepository<T> implements IRepository<T> {
      * @param value new element.
      */
     @Override
-    public T set(int index, T value) {
+    public T set(final int index,final T value) {
         Object temp = array[index];
         array[index] = value;
         return (T)temp;
-    }
-
-    @Override
-    public String toString() {
-        return "PersonArray{" +
-                "array=" + Arrays.toString(array) +
-                '}';
     }
 }

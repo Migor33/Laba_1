@@ -3,8 +3,6 @@ package com.person.tools;
 import com.person.MyRepository;
 import com.person.Person;
 import com.person.enums.ReaderStage;
-import com.person.personInterface.IRepositoryReader;
-
 import ru.vsu.lab.entities.IDivision;
 import ru.vsu.lab.entities.IPerson;
 import ru.vsu.lab.entities.enums.Gender;
@@ -17,23 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PersonArrayReader implements IRepositoryReader {
+/**
+ * Repository reader.
+ */
+public class MyRepositoryReader {
 
+    /**
+     * list of stages.
+     */
     private static List<ReaderStage> readerStage = new ArrayList();
 
     /**
      * read PersonArray from scanner
      * scanner will be closed.
-     * @param scanner scanner
+     * @param scanner scanner.
+     * @param factory factory.
      * @return IRepository
      */
-    @Override
-    public IRepository readRepository(Scanner scanner, ILabFactory factory) {
+    public final IRepository readRepository(final Scanner scanner,
+                                      final ILabFactory factory) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         IRepository personArray = factory.createRepository(Person.class);
         Scanner tempScanner = new Scanner(scanner.nextLine());
         tempScanner.useDelimiter(";");
-        for (int i = 0;tempScanner.hasNext();i++) {
+        for (int i = 0; tempScanner.hasNext(); i++) {
             String temp = tempScanner.next();
             if (temp.equals("id")) {
                 readerStage.add(ReaderStage.ID);
@@ -47,14 +52,16 @@ public class PersonArrayReader implements IRepositoryReader {
                 readerStage.add(ReaderStage.DIVISION);
             } else if (temp.equals("Salary")) {
                 readerStage.add(ReaderStage.SALARY);
-            } else readerStage.add(null);
+            } else {
+                readerStage.add(null);
+            }
         }
-        while(scanner.hasNext()) {
+        while (scanner.hasNext()) {
             tempScanner.close();
             tempScanner = new Scanner(scanner.nextLine());
             tempScanner.useDelimiter(";");
             IPerson person = factory.createPerson();
-            for (int i = 0;tempScanner.hasNext(); i++) {
+            for (int i = 0; tempScanner.hasNext(); i++) {
                 switch (readerStage.get(i)) {
                     case ID:
                         person.setId(tempScanner.nextInt());
@@ -74,10 +81,12 @@ public class PersonArrayReader implements IRepositoryReader {
                         person.setSalary(tempScanner.nextBigDecimal());
                         break;
                     case DIVISION:
-                        person.setDivision(readDivision(tempScanner.next(),factory));
+                        person.setDivision(readDivision(tempScanner.next(),
+                                                        factory));
                         break;
                     case BIRT_DATE:
-                        person.setBirthdate(LocalDate.parse(tempScanner.next(),formatter));
+                        person.setBirthdate(LocalDate.parse(tempScanner.next(),
+                                                            formatter));
                         break;
                     default:
                         tempScanner.next();
@@ -95,9 +104,10 @@ public class PersonArrayReader implements IRepositoryReader {
      * search exist division with passed name.
      * if division don't exist, create new.
      * @param a name of division.
+     * @param factory factory.
      * @return division with this name.
      */
-    IDivision readDivision(String a, ILabFactory factory) {
+    private IDivision readDivision(final String a, final ILabFactory factory) {
         for (int i = 0; i < MyRepository.existDivision.size(); i++) {
             IDivision temp = MyRepository.existDivision.get(i);
             if (a.equals(temp.getName())) {

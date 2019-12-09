@@ -4,46 +4,58 @@ import com.person.Person;
 import com.person.MyRepository;
 import com.person.division.Division;
 
+import com.person.exceptions.InjectFailedException;
 import ru.vsu.lab.entities.IDivision;
 import ru.vsu.lab.entities.IPerson;
 import ru.vsu.lab.factory.ILabFactory;
 import ru.vsu.lab.repository.IPersonRepository;
 import ru.vsu.lab.repository.IRepository;
 
-
+/**
+ * person factory.
+ */
 public class PersonFactory implements ILabFactory {
 
     /**
-     * create person
-     * @return person
+     * create person.
+     * @return person.
      */
     @Override
-    public IPerson createPerson() {
+    public final IPerson createPerson() {
         return new Person();
     }
 
     /**
-     * create division
-     * @return division
+     * create division.
+     * @return division.
      */
     @Override
-    public IDivision createDivision() {
+    public final IDivision createDivision() {
         return new Division();
     }
 
     /**
-     * create repository
-     * @param clazz
-     * @param <T>
-     * @return
+     * create repository.
+     * @param clazz class of elements.
+     * @param <T> type of elements.
+     * @return repository.
      */
     @Override
-    public <T> IRepository<T> createRepository(Class<T> clazz) {
-        return Reflector.reflect(new MyRepository<T>());
+    public final <T> IRepository<T> createRepository(final Class<T> clazz) {
+        try {
+            return Injector.inject(new MyRepository<>());
+        } catch (InjectFailedException e) {
+            e.printStackTrace();
+        }
+        return new MyRepository<>();
     }
 
+    /**
+     * do nothing.
+     * @return null.
+     */
     @Override
-    public IPersonRepository createPersonRepository() {
+    public final IPersonRepository createPersonRepository() {
         return null;
     }
 }

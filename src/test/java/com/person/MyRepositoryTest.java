@@ -71,7 +71,7 @@ public class MyRepositoryTest {
 
     @Test
     public void sortByTest() {
-        array.sortBy(Comparator.comparing(IPerson::getAge), new BubbleSort());
+        array.sortBy(Comparator.comparing(IPerson::getAge));
         boolean temp = false;
         for (int i = 0; i < array.length()-1; i++) {
             if (temp) {
