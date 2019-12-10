@@ -17,10 +17,11 @@ public class StreamAPI {
     /**
      * get list with persons which have name begins with A.
      * @param repository person repository
+     * @param salary min persons salary
      * @return list
      */
-    public static List<IPerson> nameAndSalary(final MyRepository<IPerson> repository) {
-        BigDecimal salary = new BigDecimal(10000);
+    public static List<IPerson> nameAndSalary(final MyRepository<IPerson> repository,
+                                              final BigDecimal salary) {
         return  repository.toList().stream().filter(
                 (a) ->  a.getFirstName().charAt(0) == 'A' &&
                         a.getSalary().compareTo(salary) > 0 &&
