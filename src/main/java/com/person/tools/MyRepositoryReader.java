@@ -107,7 +107,7 @@ public class MyRepositoryReader {
      * @param factory factory.
      * @return division with this name.
      */
-    private IDivision readDivision(final String a, final ILabFactory factory) {
+    public static IDivision readDivision(final String a, final ILabFactory factory) {
         for (int i = 0; i < MyRepository.existDivision.size(); i++) {
             IDivision temp = MyRepository.existDivision.get(i);
             if (a.equals(temp.getName())) {

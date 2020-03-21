@@ -1,38 +1,53 @@
 package com.person;
 
+import com.person.tools.xmlAdapters.DivisionAdapter;
+import com.person.tools.xmlAdapters.LocalDateAdapter;
 import ru.vsu.lab.entities.IDivision;
 import ru.vsu.lab.entities.IPerson;
 import ru.vsu.lab.entities.enums.Gender;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-
 /**
  * Class for storing information about human.
  */
+@XmlRootElement(name="person")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Person implements IPerson {
 
     /**
      * person birth date.
      */
+    @XmlAttribute(name="birthdate")
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthdate;
     /**
      * person id.
      */
+    @XmlAttribute(name="id")
     private Integer id;
+    @XmlAttribute(name="gender")
     /**
      * person gender.
      */
     private Gender gender;
+    @XmlAttribute(name="firstName")
     /**
      * person first name.
      */
     private String firstName;
+    @XmlAttribute(name="lastName")
     /**
      * person last name.
      */
     private String lastName;
+    @XmlAttribute(name="middleName")
     /**
      * person middle name.
      */
@@ -40,7 +55,10 @@ public class Person implements IPerson {
     /**
      * person division.
      */
+    @XmlAttribute(name="division")
+    @XmlJavaTypeAdapter(value = DivisionAdapter.class)
     private IDivision division;
+    @XmlAttribute(name="salary")
     /**
      * person salary.
      */
