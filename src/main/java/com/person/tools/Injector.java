@@ -54,6 +54,7 @@ public class Injector {
                     } catch (InstantiationException a) {
                         throw new InjectFailedException(a);
                     }
+                    break;
                 }
             }
         }

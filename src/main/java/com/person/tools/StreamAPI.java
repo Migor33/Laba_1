@@ -46,9 +46,11 @@ public class StreamAPI {
      * @return map
      */
     public static Map<IDivision, BigDecimal> divisionSalary(final MyRepository<IPerson> repository) {
-        return  repository.toList().stream().collect(Collectors.toMap(IPerson::getDivision,
-                                                                      (t) -> t.getSalary(),
-                                                                      (first, second) -> first.add(second)));
+        return  repository.toList()
+                .stream()
+                .collect(Collectors.toMap(IPerson::getDivision,
+                                          (t) -> t.getSalary(),
+                                          (first, second) -> first.add(second)));
     }
 
     /**
