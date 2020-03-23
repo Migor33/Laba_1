@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Repository reader.
@@ -25,6 +26,7 @@ public class MyRepositoryReader {
      */
     private static List<ReaderStage> readerStage = new ArrayList();
 
+    public static final Logger log = Logger.getLogger(MyRepository.class.getName());
     /**
      * read PersonArray from scanner
      * scanner will be closed.
@@ -97,6 +99,7 @@ public class MyRepositoryReader {
         }
         tempScanner.close();
         scanner.close();
+        log.fine("Repository successfully read");
         return personArray;
     }
 
@@ -111,6 +114,7 @@ public class MyRepositoryReader {
         for (int i = 0; i < MyRepository.existDivision.size(); i++) {
             IDivision temp = MyRepository.existDivision.get(i);
             if (a.equals(temp.getName())) {
+                log.fine("Division successfully read");
                 return temp;
             }
         }
@@ -118,6 +122,7 @@ public class MyRepositoryReader {
         division.setName(a);
         division.setId(MyRepository.existDivision.size());
         MyRepository.existDivision.add(division);
+        log.info("division with name " + a + " does not exist, new division has been created");
         return division;
     }
 }

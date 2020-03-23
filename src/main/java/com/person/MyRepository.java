@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 
 /**
  * Array-based Person list.
@@ -19,6 +20,9 @@ import java.util.function.Predicate;
 @XmlSeeAlso({Person.class})
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class MyRepository<T> implements IRepository<T> {
+
+    public static final Logger log = Logger.getLogger(MyRepository.class.getName());
+
     /**
      * Start array.length().
      * Also the value by which the array expands.
@@ -61,6 +65,7 @@ public class MyRepository<T> implements IRepository<T> {
     public MyRepository() {
         array = new Object[DEFAULT_LENGTH];
         head=-1;
+        log.fine("Repository created with default size");
     }
 
     /**
@@ -70,6 +75,7 @@ public class MyRepository<T> implements IRepository<T> {
     public MyRepository(final int size) {
         array = new Object[size];
         head = -1;
+        log.fine("Repository created with size = " + size);
     }
 
     /**
@@ -79,7 +85,12 @@ public class MyRepository<T> implements IRepository<T> {
      * @param person element to add.
      */
     public void add(final int index,final T person) {
-        array[index] = person;
+        if (index <= head) {
+            array[index] = person;
+            log.fine("Element added in repository with index = " + index);
+        } else {
+            log.warning("index out of range, element not added. index = " + index);
+        }
     }
 
     /**
@@ -93,9 +104,11 @@ public class MyRepository<T> implements IRepository<T> {
             System.arraycopy(array, 0, newArray, 0, head);
             newArray[head] = a;
             array = newArray;
+            log.info("Repository has been expanded");
         } else {
             array[head] = a;
         }
+        log.fine("Element added in repository in last free place");
     }
 
 
@@ -105,6 +118,7 @@ public class MyRepository<T> implements IRepository<T> {
      */
     public void sortBy(final Comparator<T> comparator) {
         sort.sort(comparator, this);
+        log.fine("Repository has been sorted");
     }
 
 
@@ -118,6 +132,7 @@ public class MyRepository<T> implements IRepository<T> {
         for (int i = 0; i < head + 1; i++) {
             list.add((T)array[i]);
         }
+        log.fine("Repository has been copied in list");
         return list;
     }
 
@@ -135,6 +150,7 @@ public class MyRepository<T> implements IRepository<T> {
                 newRepository.add((T)temp);
             }
         }
+        log.fine("searchBy() successfully completed");
         return newRepository;
     }
 
@@ -149,6 +165,9 @@ public class MyRepository<T> implements IRepository<T> {
         Object temp = null;
         if (index < array.length) {
             temp = array[index];
+            log.fine("element has been taken");
+        } else {
+            log.warning("index out of range, element not taken. index = "  + index);
         }
         return (T)temp;
     }
@@ -173,6 +192,7 @@ public class MyRepository<T> implements IRepository<T> {
         }
         array[head]=null;
         head--;
+        log.fine("element successfully deleted");
        return (T)temp;
     }
 
@@ -183,8 +203,14 @@ public class MyRepository<T> implements IRepository<T> {
      */
     @Override
     public T set(final int index,final T value) {
-        Object temp = array[index];
-        array[index] = value;
-        return (T)temp;
+        if (index <=head) {
+            Object temp = array[index];
+            array[index] = value;
+            log.fine("element successfully set");
+            return (T) temp;
+        } else {
+            log.warning("index out of range, element not set. index = "  + index);
+            return null;
+        }
     }
 }

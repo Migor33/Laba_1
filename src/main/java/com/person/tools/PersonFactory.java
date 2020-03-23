@@ -11,11 +11,15 @@ import ru.vsu.lab.factory.ILabFactory;
 import ru.vsu.lab.repository.IPersonRepository;
 import ru.vsu.lab.repository.IRepository;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * person factory.
  */
 public class PersonFactory implements ILabFactory {
 
+    public static final Logger log = Logger.getLogger(PersonFactory.class.getName());
     /**
      * create person.
      * @return person.
@@ -45,7 +49,7 @@ public class PersonFactory implements ILabFactory {
         try {
             return Injector.inject(new MyRepository<>());
         } catch (InjectFailedException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING,"Repository creation:",e);
         }
         return new MyRepository<>();
     }

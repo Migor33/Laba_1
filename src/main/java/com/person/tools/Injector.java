@@ -9,11 +9,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Injector.
  */
 public class Injector {
+
+    public static final Logger log = Logger.getLogger(Injector.class.getName());
 
     /**
      * inject repository fields.
@@ -59,6 +62,7 @@ public class Injector {
             }
         }
         scanner.close();
+        log.fine("Repository successfully injected");
         return repository;
     }
 }

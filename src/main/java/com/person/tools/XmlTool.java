@@ -23,9 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class XmlTool {
 
+    public static final Logger log = Logger.getLogger(XmlTool.class.getName());
     /**
      * write repository in xml by JAXB
      * @param myRepository
@@ -36,6 +38,7 @@ public class XmlTool {
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
         marshaller.marshal(myRepository,new File("src\\main\\resources\\repoJAXB.xml"));
+        log.fine("Repository successfully write in xml file");
     }
 
     /**
@@ -79,6 +82,7 @@ public class XmlTool {
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(new File("src\\main\\resources\\repoDOM.xml"));
         transformer.transform(source, result);
+        log.fine("Repository successfully write in xml file");
     }
 
     /**
