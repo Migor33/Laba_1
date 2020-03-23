@@ -5,6 +5,7 @@ import com.person.personInterface.SortInterface;
 import ru.vsu.lab.entities.IDivision;
 import ru.vsu.lab.repository.IRepository;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.function.Predicate;
  * Array-based Person list.
  * @param <T> type of elements.
  */
+@XmlRootElement(name="repository")
+@XmlSeeAlso({Person.class})
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public class MyRepository<T> implements IRepository<T> {
     /**
      * Start array.length().
@@ -24,6 +28,16 @@ public class MyRepository<T> implements IRepository<T> {
      * Divisions List.
      */
     public static List<IDivision> existDivision = new ArrayList<>();
+
+    private Object[] getArray() {
+        return array;
+    }
+
+    @XmlElement(name="person")
+    private void setArray(Object[] array) {
+        this.array = array;
+        head = array.length - 1;
+    }
 
     /**
      * default sort.
